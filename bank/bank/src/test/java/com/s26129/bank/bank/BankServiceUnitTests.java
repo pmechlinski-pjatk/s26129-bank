@@ -39,15 +39,18 @@ class bankServiceUnitTests {
         int returnCode = bankService.registryNewClient(555);
         assertThat(returnCode).isEqualTo(0);
     }
-//
-//    public int registryNewClient(double entryBalance) {
-//        if (entryBalance >= 0) {
-//            clientStorage.getClientList().add(new Client(clientStorage.getLastClientId() + 1, entryBalance));
-//            return 0;
-//        } else {
-//            return 1;
-//        }
-//    }
+
+    @Test
+    void newTransactionCanBeCreated(){
+        Client client = new Client(1, 100);
+        double transactionValue = 50;
+        Transaction transaction = new Transaction(1, transactionValue, client);
+        when(clientStorage.findClientById(1)).thenReturn(client);
+
+        TransactionStatus transactionStatus = bankService.createNewTransaction(transaction.getTransactionId(), transactionValue);
+        assertThat(transactionStatus.getStatus()).isEqualTo(TransactionStatus.Status.ACCEPTED);
+    }
+
 //
 //    public TransactionStatus createNewTransaction(int senderId, double transactionValue) {
 //        Client client = clientStorage.findClientById(senderId);
@@ -66,7 +69,7 @@ class bankServiceUnitTests {
 //        transactionStorage.getTransactionList().add(new Transaction( transactionStorage.getTransactionList().size()+1, transactionValue, client));
 //        return new TransactionStatus(clientBalance, transactionValue);
 //    }
-//
+///////
 //    public TransactionStatus addToBalance(int senderId, double transactionValue) {
 //        if (transactionValue <= 0) {
 //            return new TransactionStatus("Tried to order transaction with a negative value!");
@@ -82,7 +85,7 @@ class bankServiceUnitTests {
 //        client.setBalance(transactionStatus.getFinalBalance());
 //        return transactionStatus;
 //    }
-//
+////
 //    public Map<String, String> getClientData(int clientId) {
 //        Map<String, String> outputData = new HashMap<>();
 //        try {
